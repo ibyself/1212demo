@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>canvas像素操作</title>
+    <style>
+        canvas{
+            background:#c7edcc;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="test" width="600" height="300"></canvas>
+    <script>
+        window.onload=function(){
+            var canvas=document.querySelector('#test');
+            if(!canvas.getContext)return;
+            var ctx=canvas.getContext('2d');
+            var imgdata=ctx.getImageData(0,0,canvas.width,canvas.height);
+            console.log(imgdata.data);
+            console.log(imgdata.width);
+            console.log(imgdata.height);
+            for(var i=0;i<imgdata.data.length;i++){
+                imgdata.data[4*i]=0;
+                imgdata.data[4*i+1]=0;
+                imgdata.data[4*i+2]=255;
+                imgdata.data[4*i+3]=100;
+            }
+            ctx.putImageData(imgdata,0,0);
+        }
+    </script>
+</body>
+</html>

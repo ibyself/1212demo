@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas马赛克</title>
+    <style>
+        canvas{
+            background:#c7edcc;
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="test" width="300" height="300"></canvas>
+    <script>
+        window.onload=function(){
+            var canvas=document.querySelector('#test');
+            if(!canvas.getContext)return;
+            var ctx=canvas.getContext('2d');
+
+            var img=new Image();
+            img.src='img/lyml.png';
+            img.onload=function(){
+                canvas.width=img.width*2;
+                canvas.height=img.height;
+                ctx.drawImage(img,0,0);
+                var oldImgData=ctx.getImageData(0,0,img.width,img.height);
+                var newImgData=ctx.createImageData(img.width,img.height);
+                var size=5;
+                for (var i = 0; i <oldImgData.width/size ; i++) {
+                    for (var j = 0; j <oldImgData.height/size ; j++) {
+                        var x=parseInt(Math.random()*size);
+                        var y=parseInt(Math.random()*size);
+                        var color=getPxColor(oldImgData,i*size+x,j*size+y);
+                        for (var k = 0; k <size ; k++) {
+                            for (var l = 0; l <size ; l++) {
+                                setPxColor(newImgData,i*size+k,j*size+l,color);
+                            }
+                        }
+                    }
+                }
+                ctx.putImageData(newImgData,img.width,0);
+
+            };
+
+
+
+
+
+            function setPxColor(imageData,x,y,color){
+                imageData.data[(y*imageData.width+x)*4]=color[0];
+                imageData.data[(y*imageData.width+x)*4+1]=color[1];
+                imageData.data[(y*imageData.width+x)*4+2]=color[2];
+                imageData.data[(y*imageData.width+x)*4+3]=color[3];
+            }
+            function getPxColor(imageData,x,y){
+                var color=[];
+                color[0]=imageData.data[(y*imageData.width+x)*4];
+                color[1]=imageData.data[(y*imageData.width+x)*4+1];
+                color[2]=imageData.data[(y*imageData.width+x)*4+2];
+                color[3]=imageData.data[(y*imageData.width+x)*4+3];
+                return color;
+            }
+        }
+    </script>
+</body>
+</html>

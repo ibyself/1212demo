@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas文本阴影</title>
+    <style>
+        canvas{
+            background:#c7edcc;
+        }
+    </style>
+</head>
+<body>
+<canvas id="test" width="500" height="500"></canvas>
+<script>
+    window.onload=function(){
+        var canvas=document.querySelector('#test');
+        if(!canvas.getContext)return;
+        var ctx=canvas.getContext('2d');
+        ctx.shadowOffsetX=20;
+        ctx.shadowOffsetY=-20;
+        ctx.shadowColor='skyblue';
+        ctx.shadowBlur=10;
+        ctx.textAlign='center';
+        ctx.textBaseline='middle';
+        ctx.font='40px sans-serif';
+        ctx.fillText('嘿嘿',canvas.width/2,canvas.height/2);
+    }
+</script>
+</body>
+</html>

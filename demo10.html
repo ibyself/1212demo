@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas全局透明</title>
+
+</head>
+<body>
+    <canvas id="test" width="500" height="500"></canvas>
+    <script>
+        window.onload=function(){
+            var canvas=document.querySelector('#test');
+            if(!canvas.getContext)return;
+            var ctx=canvas.getContext('2d');
+            ctx.globalAlpha=.5;
+            ctx.fillStyle='skyblue';
+            ctx.fillRect(100,100,200,100);
+            ctx.fillStyle='red';
+            ctx.fillRect(200,200,200,200);
+
+        }
+    </script>
+</body>
+</html>

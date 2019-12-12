@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>canvas单个像素点的操作</title>
+    <style>
+        canvas{
+            background:#c7edcc;
+        }
+    </style>
+</head>
+<body>
+<canvas id="test" width="400" height="400"></canvas>
+<script>
+    window.onload=function(){
+        var canvas=document.querySelector('#test');
+        if(!canvas.getContext)return;
+        var ctx=canvas.getContext('2d');
+        ctx.save();
+        ctx.fillStyle='skyblue';
+        ctx.fillRect(0,0,100,100);
+        ctx.restore();
+        var imgData=ctx.getImageData(0,0,canvas.width,canvas.height);
+        var x=50,y=50;
+        var color=getPxColor(imgData,x,y);
+        for (var i = 0; i < imgData.width; i++) {
+            setPxColor(imgData,i,y,color);
+        }
+        ctx.putImageData(imgData,0,0);
+        function getPxColor(imgData,x,y){
+            var color=[];
+            var width=imgData.width;
+            color[0]=imgData.data[(y*width+x)*4];
+            color[1]=imgData.data[(y*width+x)*4+1];
+            color[2]=imgData.data[(y*width+x)*4+2];
+            color[3]=imgData.data[(y*width+x)*4+3];
+            return color;
+        }
+        function setPxColor(imgData,x,y,color){
+            imgData.data[(y*imgData.width+x)*4]=color[0];
+            imgData.data[(y*imgData.width+x)*4+1]=color[1];
+            imgData.data[(y*imgData.width+x)*4+2]=color[2];
+            imgData.data[(y*imgData.width+x)*4+3]=color[3];
+        }
+    }
+</script>
+</body>
+</html>

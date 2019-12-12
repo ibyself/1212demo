@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+    <title>Canvas刮刮卡</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        html,body{
+            height:100%;
+            overflow: hidden;
+        }
+        canvas{
+            position:absolute;
+            left:0;
+            right:0;
+        }
+        #wrap,ul,ul>li{
+            height:100%;
+        }
+        ul>li{
+            background:url('img2/b.png');
+            background-size: 100% 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <canvas id="test"></canvas>
+        <ul>
+            <li></li>
+        </ul>
+    </div>
+<script>
+    window.onload=function(){
+        var canvas=document.querySelector('#test');
+        canvas.width=document.documentElement.clientWidth;
+        canvas.height=document.documentElement.clientHeight;
+        if(!canvas.getContext)return;
+        var ctx=canvas.getContext('2d');
+        var img=new Image();
+        img.src='img2/a.png';
+        img.onload=function(){
+            ctx.drawImage(img,0,0,canvas.width,canvas.height);
+            canvas.addEventListener('touchstart',function(e){
+                e=e||window.event;
+                var touch=e.changedTouches[0];
+                var x=touch.clientX;
+                var y=touch.clientY;
+                ctx.lineWidth=50;
+                ctx.lineJoin='round';
+                ctx.lineCap='round';
+                ctx.globalCompositeOperation='destination-out';
+                ctx.moveTo(x,y);
+                ctx.lineTo(x+1,y+1);
+                ctx.stroke();
+            });
+            canvas.addEventListener('touchmove',function(e){
+                e=e||window.event;
+                var touch=e.changedTouches[0];
+                var x=touch.clientX;
+                var y=touch.clientY;
+                ctx.lineTo(x,y);
+                ctx.stroke();
+            });
+            canvas.addEventListener('touchend',function(e){
+                var imgData=ctx.getImageData(0,0,canvas.width,canvas.height);
+                var allPx=imgData.width*imgData.height;
+                var num=0;
+                for (var i = 0; i <allPx ; i++) {
+                    if(imgData.data[4*i+3]===0){
+                        num++;
+                    }
+                }
+                if(num>allPx/2){
+                    canvas.style.opacity=0;
+                    canvas.style.transition='1s';
+                }
+            });
+            canvas.addEventListener('transitionend',function(){
+                this.remove();
+            })
+
+        }
+    }
+</script>
+</body>
+</html>

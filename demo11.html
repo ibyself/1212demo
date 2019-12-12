@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas合成属性</title>
+
+</head>
+<body>
+<canvas id="test" width="500" height="500"></canvas>
+<script>
+    window.onload=function(){
+        var canvas=document.querySelector('#test');
+        if(!canvas.getContext)return;
+        var ctx=canvas.getContext('2d');
+        ctx.fillStyle='red';
+        ctx.fillRect(50,50,100,100);
+        ctx.globalCompositeOperation='destination-atop';
+        ctx.fillStyle='green';
+        ctx.fillRect(100,100,100,100);
+    }
+</script>
+</body>
+</html>
